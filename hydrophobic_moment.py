@@ -136,6 +136,8 @@ def analyze_sequence(name=None, sequence=None, window=18, verbose=False):
         name = 'Unnamed'
 
     w = window
+    if w < 0:
+        w = len(sequence)  # automatically set
 
     outdata = []  # for csv writing
 
@@ -218,8 +220,10 @@ if __name__ == '__main__':
                     help='Write information to screen as well')
     ap.add_argument('--scale', choices=_supported_scales,
                     help='Hydrophobicity scale to use')
-    ap.add_argument('-w', '--window', default=18,
-                    help='AA window to use during analysis.')
+    ap.add_argument('-w', '--window', default=18, type=int,
+                    help=(
+                        'AA window to use during analysis. Set to -1 to '
+                        'automatically match the full-length of the sequence'))
     cmd = ap.parse_args()
 
     # File or Sequence?
